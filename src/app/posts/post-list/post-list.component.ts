@@ -1,7 +1,8 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { PostService } from 'src/app/post.service';
 import { Post } from '../post.model';
-import { Subscription, tap } from 'rxjs'
+import { Subscription } from 'rxjs'
+import { ActivatedRoute } from '@angular/router';
 
 
 @Component({
@@ -12,7 +13,7 @@ import { Subscription, tap } from 'rxjs'
 export class PostListComponent implements OnInit, OnDestroy {
   posts: Post[] = [];
   postSubs = new Subscription();
-  constructor(private postService: PostService) { }
+  constructor(private postService: PostService, private route: ActivatedRoute) { }
 
   ngOnInit(): void {
     this.postService.getPosts();
@@ -20,6 +21,8 @@ export class PostListComponent implements OnInit, OnDestroy {
       .subscribe((posts:any) => { 
         this.posts = posts;
     })
+    // this.route.paramMap.subscribe(v => console.log(v))
+
   }
 
   ngOnDestroy(){

@@ -1,1 +1,9 @@
-<mat-toolbar color="primary">Hello World</mat-toolbar>
+<mat-toolbar color="primary">
+  <span routerLink="/" [ngStyle]="{ cursor: 'pointer' }">My Posts</span>
+  <span class="spacer"></span>
+  <ul>
+    <li><a mat-button routerLink="/create" routerLinkActive="mat-accent">New Post</a></li>
+    <!-- <li><a routerLink=""></a></li>
+    <li><a routerLink=""></a></li> -->
+  </ul>
+</mat-toolbar>
