@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { any } from 'joi';
+import { Post } from './posts/post.model';
 
 @Component({
   selector: 'app-root',
@@ -9,10 +9,9 @@ import { any } from 'joi';
 export class AppComponent {
   title = 'postED';
 
-  posts:{title:string,content:string}[] = [];
+  posts:Post[] = [];
 
-  onReceivePost(post:any){
-    console.log(post);
+  onReceivePost(post:Post){
     this.posts.push(post)
   }
 }

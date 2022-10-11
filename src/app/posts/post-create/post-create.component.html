@@ -1,0 +1,28 @@
+<mat-card>
+  <form (submit)="onAddPost(postForm)" #postForm="ngForm">
+    <mat-card-content>
+      <input
+        matInput
+        type="text"
+        name="title"
+        ngModel
+        required
+        #title="ngModel"
+        [ngModelOptions]="{ updateOn: 'blur' }"
+      />
+      <mat-error *ngIf="title.invalid"> Invalid input</mat-error>
+    </mat-card-content>
+    <mat-card-content>
+      <textarea
+        rows="6"
+        name="content"
+        ngModel
+        required
+        #content="ngModel"
+        [ngModelOptions]="{ updateOn: 'blur' }"
+      ></textarea>
+      <mat-error *ngIf="content.invalid">Invalid input</mat-error>
+    </mat-card-content>
+    <button mat-raised-button color="primary" type="submit">Save Post</button>
+  </form>
+</mat-card>
