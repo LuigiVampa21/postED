@@ -8,9 +8,9 @@
         ngModel
         required
         #title="ngModel"
-        [ngModelOptions]="{ updateOn: 'blur' }"
+        placeholder="Enter Post Title"
       />
-      <mat-error *ngIf="title.invalid"> Invalid input</mat-error>
+      <!-- <mat-error *ngIf="title.invalid"> Invalid input</mat-error> -->
     </mat-card-content>
     <mat-card-content>
       <textarea
@@ -19,9 +19,9 @@
         ngModel
         required
         #content="ngModel"
-        [ngModelOptions]="{ updateOn: 'blur' }"
+        placeholder="Enter Post Comment"
       ></textarea>
-      <mat-error *ngIf="content.invalid">Invalid input</mat-error>
+      <!-- <mat-error *ngIf="content.invalid">Invalid input</mat-error> -->
     </mat-card-content>
     <button mat-raised-button color="primary" type="submit">Save Post</button>
   </form>
