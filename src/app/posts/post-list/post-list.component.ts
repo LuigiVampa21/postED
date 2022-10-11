@@ -17,8 +17,7 @@ export class PostListComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.postService.getPosts();
     this.postSubs = this.postService.getPostUpdated()
-      .subscribe((posts:any) => {
-        console.log(posts);    
+      .subscribe((posts:any) => { 
         this.posts = posts;
     })
   }
@@ -29,7 +28,10 @@ export class PostListComponent implements OnInit, OnDestroy {
 
   onEdit(){}
   
-  onDelete(){}
-  
+  onDelete(post:Post){
+    const {id} = post;
+    if(!id) return;
+    this.postService.deletePost(id)
+  }
 }
 
