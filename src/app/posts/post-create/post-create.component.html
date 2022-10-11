@@ -1,36 +1,55 @@
 <mat-card>
-  <form (submit)="onAddPost(postForm)" #postForm="ngForm">
+  <mat-spinner *ngIf="isLoading"></mat-spinner>
+  <form [formGroup]="postForm" *ngIf="!isLoading" (ngSubmit)="onSavePost()">
     <mat-form-field>
       <input
         matInput
         type="text"
         name="title"
-        [ngModel]="post?.title"
-        required
-        #title="ngModel"
+        formControlName="title"
         placeholder="Enter Post Title"
       />
-      <mat-error *ngIf="title.invalid"> Invalid title</mat-error>
+      <mat-error *ngIf="postForm.get('title')?.invalid">
+        Invalid title</mat-error
+      >
     </mat-form-field>
+    <br />
+    <div>
+      <button
+        mat-button
+        type="button"
+        color="primary"
+        (click)="dropFile.click()"
+      >
+        Pick image
+      </button>
+      <input
+        type="file"
+        class="dropFile"
+        #dropFile
+        (change)="onImageDropped($event)"
+      />
+    </div>
+    <br />
+    <div *ngIf="imagePreview">
+      <img
+        class="image-preview"
+        [src]="imagePreview"
+        [alt]="postForm.value.title"
+      />
+    </div>
     <mat-form-field>
       <textarea
         matInput
         rows="6"
         name="content"
-        [ngModel]="post?.content"
-        required
-        #content="ngModel"
+        formControlName="content"
         placeholder="Enter Post Comment"
       ></textarea>
-      <mat-error *ngIf="content.invalid">Invalid content</mat-error>
+      <mat-error *ngIf="postForm.get('content')?.invalid"
+        >Invalid content</mat-error
+      >
     </mat-form-field>
-    <button
-      mat-raised-button
-      color="primary"
-      type="submit"
-      (click)="onGetSinglePost()"
-    >
-      Save Post
-    </button>
+    <button mat-raised-button color="primary" type="submit">Save Post</button>
   </form>
 </mat-card>

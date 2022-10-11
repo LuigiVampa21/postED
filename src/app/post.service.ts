@@ -2,6 +2,8 @@ import { Injectable } from '@angular/core';
 import { Post } from './posts/post.model';
 import { Subject, map } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
+import { Router } from '@angular/router';
+
 
 
 @Injectable({
@@ -13,7 +15,7 @@ export class PostService {
 
  private posts: Post[] = [];
 
-  constructor(private http: HttpClient) { }
+  constructor(private http:HttpClient, private router:Router) { }
 
   getPosts(){
     return this.http.get<Post[]>('http://localhost:3030/api/posts')
@@ -37,7 +39,7 @@ export class PostService {
   }
 
   getSinglePost(id:string|null){
-    return this.posts.find(post => post.id === id)
+    return this.http.get(`http://localhost:3030/api/posts/${id}`)
   }
 
   addPost(title:string, content: string){
@@ -45,10 +47,9 @@ export class PostService {
     this.http.post('http://localhost:3030/api/posts', post)
         .subscribe((data:any) => {
           post.id = data.data._id
-          console.log(post);
-          
           this.posts.push(post);
-          this.posts$.next(this.posts)
+          this.posts$.next(this.posts);
+          this.router.navigateByUrl('/')
         })
   }
 
@@ -57,12 +58,18 @@ export class PostService {
       .subscribe(()=> {
         const updatedPost = this.posts.filter(post => post.id !== id);
         this.posts = updatedPost;
-        this.posts$.next(this.posts)
+        this.posts$.next(this.posts);
+        this.router.navigateByUrl('/')
       })
   }
 
-  updatePost(id:string){
-    const updatedPost = '';
-    this.http.patch(`http://localhost:3030/api/posts/${id}`, updatedPost)
+  updatePost(post:Post){
+    const {id, title, content} = post;
+    this.http.patch(`http://localhost:3030/api/posts/${id}`, {title,content})
+        .subscribe( () => {
+          this.posts.push(post);
+          this.posts$.next(this.posts);
+          this.router.navigateByUrl('/')
+        } )
   }
 }

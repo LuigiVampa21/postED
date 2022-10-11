@@ -1,10 +1,12 @@
 require("dotenv").config();
+require("express-async-errors");
 
 const express = require("express");
 const app = express();
 
 const Post = require("./models/postModel");
 const connectDB = require("./DB/connectDB");
+const postRouter = require("./routes/postsRoutes");
 
 connectDB(process.env.MONGO_URI);
 
@@ -24,29 +26,6 @@ app.use((req, res, next) => {
   next();
 });
 
-app.post("/api/posts", async (req, res) => {
-  const newPost = await Post.create(req.body);
-  res.status(201).json({
-    status: "success",
-    data: newPost,
-  });
-});
-
-app.get("/api/posts", async (req, res) => {
-  const posts = await Post.find();
-  res.status(200).json({
-    status: "success",
-    data: posts,
-  });
-});
-
-app.delete("/api/posts/:id", async (req, res) => {
-  const { id } = req.params;
-  await Post.findByIdAndDelete(id);
-  res.status(200).json({
-    status: "success",
-    data: null,
-  });
-});
+app.use("/api/posts", postRouter);
 
 module.exports = app;

@@ -6,3 +6,16 @@ mat-card{
 mat-form-field, textarea{
     width: 100%;
 }
+
+mat-spinner{
+    margin: auto;
+}
+
+.dropFile{
+    visibility: hidden;
+}
+
+.image-preview{
+    height: 5rem;
+    margin: 1rem;
+}

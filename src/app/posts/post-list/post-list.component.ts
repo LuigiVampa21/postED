@@ -13,16 +13,18 @@ import { ActivatedRoute } from '@angular/router';
 export class PostListComponent implements OnInit, OnDestroy {
   posts: Post[] = [];
   postSubs = new Subscription();
-  constructor(private postService: PostService, private route: ActivatedRoute) { }
+  isLoading = false;
+
+  constructor(private postService: PostService) { }
 
   ngOnInit(): void {
     this.postService.getPosts();
+    this.isLoading = true;
     this.postSubs = this.postService.getPostUpdated()
       .subscribe((posts:any) => { 
+        this.isLoading = false;
         this.posts = posts;
     })
-    // this.route.paramMap.subscribe(v => console.log(v))
-
   }
 
   ngOnDestroy(){
