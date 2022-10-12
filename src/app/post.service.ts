@@ -10,7 +10,6 @@ import { Router } from '@angular/router';
   providedIn: 'root'
 })
 export class PostService {
-
  posts$ = new Subject<{posts: Post[], postCount: number}>();
  results!:number;
 
