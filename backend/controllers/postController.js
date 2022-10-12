@@ -1,12 +1,58 @@
 const Post = require("../models/postModel");
 
 exports.getAllposts = async (req, res) => {
-  const posts = await Post.find();
+  const pageSize = +req.query.pageSize;
+  const currentPage = +req.query.page;
+  // console.log(pageSize, currentPage);
+  let postQuery = Post.find();
+  let posts;
+  let postCount = await Post.countDocuments();
+  console.log(postCount);
+  if (pageSize && currentPage) {
+    posts = await postQuery.skip(pageSize * (currentPage - 1)).limit(pageSize);
+    // console.log("pageSize");
+    // console.log(posts.length);
+    res.status(200).json({
+      status: "success",
+      results: postCount,
+      data: posts,
+    });
+  } else {
+    posts = await postQuery;
+    // console.log("NopageSize");
+    res.status(200).json({
+      status: "success",
+      results: postCount,
+      data: posts,
+    });
+  }
+  // const posts = await Post.find({});
+  // console.log(posts);
+};
+exports.getSinglePost = async (req, res) => {
+  const { id } = req.params;
+  const post = await Post.findById(id);
+  if (!post) throw new Error("Sorry this post does not exists !");
+  console.log(post);
   res.status(200).json({
     status: "success",
-    data: posts,
+    data: post,
   });
 };
+
+exports.deletePost = async (req, res) => {
+  const { id } = req.params;
+  const post = await Post.findByIdAndDelete(id);
+  if (!post) throw new Error("Sorry this post does not exists !");
+  res.status(200).json({
+    status: "success",
+    data: null,
+  });
+};
+
+// -------------------------------------------------------
+
+// initial controllers => to update ::
 
 // exports.createNewPost = async (req, res) => {
 //   // upload.single('img');
@@ -18,16 +64,7 @@ exports.getAllposts = async (req, res) => {
 //   });
 // };
 
-exports.getSinglePost = async (req, res) => {
-  const { id } = req.params;
-  const post = await Post.findById(id);
-  if (!post) throw new Error("Sorry this post does not exists !");
-  console.log(post);
-  res.status(200).json({
-    status: "success",
-    data: post,
-  });
-};
+// -------------------------------------------------------
 
 // exports.updatePost = async (req, res) => {
 //   const { id } = req.params;
@@ -43,13 +80,3 @@ exports.getSinglePost = async (req, res) => {
 //     data: updatedPost,
 //   });
 // };
-
-exports.deletePost = async (req, res) => {
-  const { id } = req.params;
-  const post = await Post.findByIdAndDelete(id);
-  if (!post) throw new Error("Sorry this post does not exists !");
-  res.status(200).json({
-    status: "success",
-    data: null,
-  });
-};

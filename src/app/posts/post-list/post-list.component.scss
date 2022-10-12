@@ -7,13 +7,16 @@ mat-spinner{
     margin: auto;
 }
 
+mat-paginator{
+    margin-top: 1rem;
+}
+
 .post-image{
     width: 10%;
-    // height: 5rem;
 }
 
 .post-image img{
     width: 100%;
     box-shadow:  1px 1px 5px grey;
-    // height: 10rem;
 }
+
