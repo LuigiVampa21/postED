@@ -1,5 +1,6 @@
 require("dotenv").config();
 require("express-async-errors");
+const path = require("path");
 
 const express = require("express");
 const app = express();
@@ -9,6 +10,8 @@ const connectDB = require("./DB/connectDB");
 const postRouter = require("./routes/postsRoutes");
 
 connectDB(process.env.MONGO_URI);
+
+app.use("/images", express.static(path.join("backend/images")));
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));

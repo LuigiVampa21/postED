@@ -37,6 +37,9 @@ constructor(private postService: PostService, private route: ActivatedRoute) { }
         this.postService.getSinglePost(this.id)
         .subscribe((data:any) => {
           this.post = data.data
+          this.postForm.controls['title'].setValue(this.post?.title);
+          this.postForm.controls['content'].setValue(this.post?.content);
+    this.postForm.get('image')?.updateValueAndValidity()
         });
         this.isLoading = false;
       }else{
@@ -51,6 +54,8 @@ constructor(private postService: PostService, private route: ActivatedRoute) { }
     const file = (event.target as any).files[0];
     this.postForm.patchValue({image: file});
     this.postForm.get('image')?.updateValueAndValidity()
+    console.log(this.postForm.value.image);
+    
     const reader = new FileReader();
     reader.onload = () => {
       this.imagePreview = reader.result as string
@@ -64,9 +69,10 @@ constructor(private postService: PostService, private route: ActivatedRoute) { }
     if(this.mode === 'create'){
       const post:Post = {
         title: this.postForm.value.title,
-        content: this.postForm.value.content
+        content: this.postForm.value.content,
       }
-      this.postService.addPost(post.title, post.content)
+      this.postService.addPost(post.title, post.content, this.postForm.value.image)
+      
     }else{
       const post:Post = {
         title: this.postForm.value.title,
