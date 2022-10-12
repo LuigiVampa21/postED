@@ -39,7 +39,7 @@ constructor(private postService: PostService, private route: ActivatedRoute) { }
           this.post = data.data
           this.postForm.controls['title'].setValue(this.post?.title);
           this.postForm.controls['content'].setValue(this.post?.content);
-    this.postForm.get('image')?.updateValueAndValidity()
+          this.postForm.controls['image'].setValue(this.post?.imagePath);
         });
         this.isLoading = false;
       }else{
@@ -77,7 +77,8 @@ constructor(private postService: PostService, private route: ActivatedRoute) { }
       const post:Post = {
         title: this.postForm.value.title,
         content: this.postForm.value.content,
-        id: this.id
+        id: this.id,
+        imagePath: this.postForm.value.image
       }
       this.postService.updatePost(post)
     }

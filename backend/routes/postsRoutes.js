@@ -37,7 +37,6 @@ router.post("/", multer({ storage: storage }).single("image"), (req, res) => {
   });
   post.save().then((createdPost) => {
     res.status(201).json({
-      // data: createdPost,
       data: {
         id: createdPost._id,
         title: createdPost.title,
@@ -51,7 +50,31 @@ router.post("/", multer({ storage: storage }).single("image"), (req, res) => {
 router
   .route("/:id")
   .get(postController.getSinglePost)
-  .patch(postController.updatePost)
+  // .patch(postController.updatePost)
   .delete(postController.deletePost);
+
+router.patch(
+  "/:id",
+  multer({ storage: storage }).single("image"),
+  async (req, res) => {
+    const { id } = req.params;
+    const { title, content } = req.body;
+    let imagePath;
+    if(req.file){
+      const url = req.protocol + "://" + req.get('host');
+      imagePath = url + '/images/' + req.file.filename 
+    }
+    const updatedPost = await Post.findByIdAndUpdate(id, {
+      title: title,
+      content: content,
+      imagePath: imagePath,
+    });
+    if (!updatedPost) throw new Error("Sorry this post does not exists !");
+    res.status(200).json({
+      status: "success",
+      data: updatedPost,
+    });
+  }
+);
 
 module.exports = router;

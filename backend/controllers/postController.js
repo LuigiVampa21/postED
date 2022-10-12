@@ -29,16 +29,20 @@ exports.getSinglePost = async (req, res) => {
   });
 };
 
-exports.updatePost = async (req, res) => {
-  const { id } = req.params;
-  const { title, content } = req.body;
-  const updatedPost = await Post.findByIdAndUpdate(id, { title, content });
-  if (!updatedPost) throw new Error("Sorry this post does not exists !");
-  res.status(200).json({
-    status: "success",
-    data: updatedPost,
-  });
-};
+// exports.updatePost = async (req, res) => {
+//   const { id } = req.params;
+//   const { title, content, imagePath } = req.body;
+//   const updatedPost = await Post.findByIdAndUpdate(id, {
+//     title: title,
+//     content: content,
+//     imagePath: imagePath,
+//   });
+//   if (!updatedPost) throw new Error("Sorry this post does not exists !");
+//   res.status(200).json({
+//     status: "success",
+//     data: updatedPost,
+//   });
+// };
 
 exports.deletePost = async (req, res) => {
   const { id } = req.params;
