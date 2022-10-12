@@ -9,7 +9,7 @@ import { AuthService } from '../auth.service';
 })
 export class LoginComponent implements OnInit {
 
-  isLoading!: boolean;
+  isLoading= false;
 
   constructor(private authService:AuthService) { }
 
@@ -17,7 +17,8 @@ export class LoginComponent implements OnInit {
   }
 
   onLogin(f:NgForm){
-     this.authService.onLogin(f.value)
+    this.isLoading = true;
+    this.authService.onLogin(f.value);
   }
 
 }

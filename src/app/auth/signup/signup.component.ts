@@ -10,13 +10,14 @@ import { AuthService } from '../auth.service';
 })
 export class SignupComponent implements OnInit {
 
-  isLoading!:boolean
+  isLoading = false;
   constructor(private authService:AuthService) { }
 
   ngOnInit(): void {
   }
 
   onSignup(f:NgForm){
+    this.isLoading = true;
     this.authService.onSignup(f.value);   
   }
 

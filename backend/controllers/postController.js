@@ -6,9 +6,8 @@ exports.getAllposts = async (req, res) => {
   let postQuery = Post.find();
   let posts;
   let postCount = await Post.countDocuments();
-  console.log(postCount);
   if (pageSize && currentPage) {
-    posts = await postQuery.skip(pageSize * (currentPage - 1)).limit(pageSize); 
+    posts = await postQuery.skip(pageSize * (currentPage - 1)).limit(pageSize);
     res.status(200).json({
       status: "success",
       results: postCount,
@@ -27,7 +26,6 @@ exports.getSinglePost = async (req, res) => {
   const { id } = req.params;
   const post = await Post.findById(id);
   if (!post) throw new Error("Sorry this post does not exists !");
-  console.log(post);
   res.status(200).json({
     status: "success",
     data: post,

@@ -8,12 +8,25 @@
       >
     </li>
     <li>
-      <a mat-button routerLink="/login" routerLinkActive="mat-accent">Login</a>
+      <a
+        mat-button
+        routerLink="/login"
+        routerLinkActive="mat-accent"
+        *ngIf="!isAuth"
+        >Login</a
+      >
     </li>
     <li>
-      <a mat-button routerLink="/signup" routerLinkActive="mat-accent"
+      <a
+        mat-button
+        routerLink="/signup"
+        routerLinkActive="mat-accent"
+        *ngIf="!isAuth"
         >Signup</a
       >
+    </li>
+    <li>
+      <button mat-button *ngIf="isAuth" (click)="onLogout()">Logout</button>
     </li>
   </ul>
 </mat-toolbar>

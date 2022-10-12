@@ -31,7 +31,7 @@ const storage = multer.diskStorage({
 
 router.post(
   "/",
-  // authMiddleware.checkToken,
+  authMiddleware.checkToken,
   multer({ storage: storage }).single("image"),
   (req, res) => {
     const url = req.protocol + "://" + req.get("host");
@@ -58,12 +58,12 @@ router
   .get(postController.getSinglePost)
   // .patch(postController.updatePost)
   .delete(
-    // authMiddleware.checkToken,
+    authMiddleware.checkToken,
     postController.deletePost);
 
 router.patch(
   "/:id",
-  // authMiddleware.checkToken,
+  authMiddleware.checkToken,
   multer({ storage: storage }).single("image"),
   async (req, res) => {
     const { id } = req.params;

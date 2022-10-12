@@ -21,7 +21,6 @@ export class PostService {
     const queryParams = `?pageSize=${postsPerPage}&page=${currentPage}`
     return this.http.get<{results: number, data:any}>('http://localhost:3030/api/posts' + queryParams)
     .pipe(map((data:any) => {  
-      console.log(data);
           this.results = data.results 
       return data.data.map((post: any) => {
         return {
