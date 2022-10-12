@@ -3,15 +3,12 @@ const Post = require("../models/postModel");
 exports.getAllposts = async (req, res) => {
   const pageSize = +req.query.pageSize;
   const currentPage = +req.query.page;
-  // console.log(pageSize, currentPage);
   let postQuery = Post.find();
   let posts;
   let postCount = await Post.countDocuments();
   console.log(postCount);
   if (pageSize && currentPage) {
-    posts = await postQuery.skip(pageSize * (currentPage - 1)).limit(pageSize);
-    // console.log("pageSize");
-    // console.log(posts.length);
+    posts = await postQuery.skip(pageSize * (currentPage - 1)).limit(pageSize); 
     res.status(200).json({
       status: "success",
       results: postCount,
@@ -19,15 +16,12 @@ exports.getAllposts = async (req, res) => {
     });
   } else {
     posts = await postQuery;
-    // console.log("NopageSize");
     res.status(200).json({
       status: "success",
       results: postCount,
       data: posts,
     });
   }
-  // const posts = await Post.find({});
-  // console.log(posts);
 };
 exports.getSinglePost = async (req, res) => {
   const { id } = req.params;

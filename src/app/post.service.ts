@@ -35,7 +35,6 @@ export class PostService {
     }))
       .subscribe((data:any) => {
           this.posts = data;   
-          // console.log(data);                 
           this.posts$.next({posts: data, postCount: this.results})
         })
   }
@@ -44,9 +43,7 @@ export class PostService {
     return this.posts$.asObservable();
   }
 
-  getSinglePost(id:string|null){
-    // console.log(id);
-    
+  getSinglePost(id:string|null){    
     return this.http.get(`http://localhost:3030/api/posts/${id}`)
   }
 
