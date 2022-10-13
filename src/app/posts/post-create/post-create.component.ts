@@ -1,8 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, ParamMap } from '@angular/router';
 import { PostService } from 'src/app/posts/post.service';
 import { Post } from '../post.model';
+import { Subscription } from 'rxjs'
+import { AuthService } from 'src/app/auth/auth.service';
+
 
 
 
@@ -11,18 +14,21 @@ import { Post } from '../post.model';
   templateUrl: './post-create.component.html',
   styleUrls: ['./post-create.component.scss']
 })
-export class PostCreateComponent implements OnInit {
+export class PostCreateComponent implements OnInit, OnDestroy {
   private mode = 'create';
   private id!:string | null;
+  private authSub = new Subscription()
   post: Post | undefined;
   isLoading = false;
   postForm!: FormGroup;
   imagePreview!: string;
 
-constructor(private postService: PostService, private route: ActivatedRoute) { }
+constructor(private postService: PostService, private route: ActivatedRoute, private authService: AuthService) { }
 
   ngOnInit(): void {
-
+    this.authSub = this.authService.getisAuth$().subscribe( () => {
+      this.isLoading = false;
+    })
     this.postForm = new FormGroup({
       'title': new FormControl('', {validators: [Validators.required, Validators.minLength(3)]}),
       'content': new FormControl('', {validators: [Validators.required, Validators.minLength(1)]}),
@@ -88,6 +94,9 @@ constructor(private postService: PostService, private route: ActivatedRoute) { }
 
     onGetSinglePost(){
       this.postService.getSinglePost(this.id)
-    }
+  }
 
- }
+  ngOnDestroy(): void {
+    this.authSub.unsubscribe()
+  }
+}

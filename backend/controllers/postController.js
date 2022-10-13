@@ -40,7 +40,7 @@ exports.deletePost = async (req, res) => {
   const post = await Post.findById(id);
   if (post.creator != req.userData.userID) {
     throw new CustomError.UnauthorizeError(
-      "Sorry you are not authorized to change this post !"
+      "Sorry you are not authorized to delete this post !"
     );
   }
   await Post.findByIdAndDelete(id);

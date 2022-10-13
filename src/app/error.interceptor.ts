@@ -18,7 +18,11 @@ export class ErrorInterceptor implements HttpInterceptor {
   intercept(request: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {
     return next.handle(request)
         .pipe(catchError((err:HttpErrorResponse)=>{
-          this.dialog.open(ErrorComponent)         
+          let errorMessage = "Oops Something went wrong, try again later !";
+          if(err.error.msg){
+            errorMessage = err.error.msg;
+          }
+          this.dialog.open(ErrorComponent, {data: {message: errorMessage}})         
           return throwError(err)
         }))
         };

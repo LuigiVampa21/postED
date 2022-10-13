@@ -17,7 +17,6 @@ exports.signup = async (req, res) => {
 };
 
 exports.login = async (req, res) => {
-  // const { id } = req.params;
   const { email, password } = req.body;
   const user = await User.findOne({ email });
   if (!user) throw new CustomError.NotFoundError("Sorry no user found!");

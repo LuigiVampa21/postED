@@ -1,14 +1,20 @@
 const jwt = require("jsonwebtoken");
+const { StatusCodes } = require("http-status-codes");
+const CustomError = require("../errors/index");
 
 exports.checkToken = async (req, res, next) => {
   const token = await req.headers.authorizations.split(" ")[1];
-  // const token = await req.headers.authorization.split(" ")[2];
-  console.log(token);
   if (!token)
-    throw new Error("Sorry you are not authorized to access this route");
+    throw new CustomError.UnauthenticatedError(
+      "Sorry you are not authorized to access this route"
+    );
+  if (!jwt.verify(token, process.env.JWT_SECRET)) {
+    throw new CustomError.UnauthenticatedError(
+      "Sorry your token is not valid anymore"
+    );
+  }
   const decoded = jwt.verify(token, process.env.JWT_SECRET);
   const { email, userID } = decoded;
   req.userData = { email, userID };
-  if (!decoded) throw new Error("Sorry your token is not valid anymore");
   next();
 };
