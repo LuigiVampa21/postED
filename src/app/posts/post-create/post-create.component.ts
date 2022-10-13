@@ -88,7 +88,6 @@ constructor(private postService: PostService, private route: ActivatedRoute, pri
       }
       this.postService.updatePost(post)
     }
-    this.postForm.reset();         
     this.isLoading = false;
   }
 

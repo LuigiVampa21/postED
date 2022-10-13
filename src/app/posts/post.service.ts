@@ -3,6 +3,7 @@ import { Post } from './post.model';
 import { Subject, map } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
+import { environment } from '../../environments/environment';
 
 
 
@@ -12,6 +13,7 @@ import { Router } from '@angular/router';
 export class PostService {
  posts$ = new Subject<{posts: Post[], postCount: number}>();
  results!:number;
+ API = environment.API_URL;
 
  private posts: Post[] = [];
 
@@ -19,7 +21,7 @@ export class PostService {
 
   getPosts(postsPerPage:number, currentPage:number){
     const queryParams = `?pageSize=${postsPerPage}&page=${currentPage}`
-    return this.http.get<{results: number, data:any}>('http://localhost:3030/api/posts' + queryParams)
+    return this.http.get<{results: number, data:any}>(`${this.API}/posts/` + queryParams)
     .pipe(map((data:any) => {  
           this.results = data.results 
       return data.data.map((post: any) => {
@@ -43,7 +45,7 @@ export class PostService {
   }
 
   getSinglePost(id:string|null){    
-    return this.http.get(`http://localhost:3030/api/posts/${id}`)
+    return this.http.get(`${this.API}/posts/${id}`)
   }
 
   addPost(title:string, content: string, image: File){
@@ -51,14 +53,14 @@ export class PostService {
     postData.append('title', title);
     postData.append('content', content);
     postData.append('image', image);
-    this.http.post('http://localhost:3030/api/posts', postData)
+    this.http.post(`${this.API}/posts`, postData)
         .subscribe((data:any) => {
           this.router.navigateByUrl('/')
         })
   }
 
   deletePost(id:string){
-   return this.http.delete(`http://localhost:3030/api/posts/${id}`)
+   return this.http.delete(`${this.API}/posts/${id}`)
   }
 
   updatePost(post:Post){
@@ -77,7 +79,7 @@ export class PostService {
         imagePath
       }      
     }
-    this.http.patch(`http://localhost:3030/api/posts/${id}`, postData)
+    this.http.patch(`${this.API}/posts/${id}`, postData)
         .subscribe( (data:any) => {
           this.router.navigateByUrl('/')
         } )

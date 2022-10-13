@@ -27,34 +27,13 @@ exports.getAllposts = async (req, res) => {
 
 exports.createPost = async (req, res) => {
   const url = req.protocol + "://" + req.get("host");
-  // const post = new Post({
-  //   title: req.body.title,
-  //   content: req.body.content,
-  //   imagePath: url + "/images/" + req.file.filename,
-  //   creator: req.userData.userID,
-  // });
-  // post.save().then((createdPost) => {
-  //   res.status(StatusCodes.CREATED).json({
-  //     data: {
-  //       id: createdPost._id,
-  //       title: createdPost.title,
-  //       content: createdPost.content,
-  //       imagePath: createdPost.imagePath,
-  //     },
   const newPost = await Post.create({
     title: req.body.title,
     content: req.body.content,
     imagePath: url + "/images/" + req.file.filename,
     creator: req.userData.userID,
   });
-  // Post.save().then((createdPost) => {
   res.status(StatusCodes.CREATED).json({
-    // data: {
-    //   id: createdPost._id,
-    //   title: createdPost.title,
-    //   content: createdPost.content,
-    //   imagePath: createdPost.imagePath,
-    // },
     createdPost: newPost,
   });
 };
@@ -114,34 +93,3 @@ exports.deletePost = async (req, res) => {
     data: null,
   });
 };
-
-// -------------------------------------------------------
-
-// initial controllers => to update ::
-
-// exports.createNewPost = async (req, res) => {
-//   // upload.single('img');
-//   multer({ storage: storage }).single("image");
-//   const newPost = await Post.create(req.body);
-//   res.status(201).json({
-//     status: "success",
-//     data: newPost,
-//   });
-// };
-
-// -------------------------------------------------------
-
-// exports.updatePost = async (req, res) => {
-//   const { id } = req.params;
-//   const { title, content, imagePath } = req.body;
-//   const updatedPost = await Post.findByIdAndUpdate(id, {
-//     title: title,
-//     content: content,
-//     imagePath: imagePath,
-//   });
-//   if (!updatedPost) throw new Error("Sorry this post does not exists !");
-//   res.status(200).json({
-//     status: "success",
-//     data: updatedPost,
-//   });
-// };
