@@ -82,8 +82,8 @@ constructor(private postService: PostService, private route: ActivatedRoute) { }
       }
       this.postService.updatePost(post)
     }
-    this.isLoading = false;
     this.postForm.reset();         
+    this.isLoading = false;
   }
 
     onGetSinglePost(){

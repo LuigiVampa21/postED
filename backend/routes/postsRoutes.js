@@ -39,6 +39,7 @@ router.post(
       title: req.body.title,
       content: req.body.content,
       imagePath: url + "/images/" + req.file.filename,
+      creator: req.userData.userID,
     });
     post.save().then((createdPost) => {
       res.status(201).json({
@@ -57,9 +58,7 @@ router
   .route("/:id")
   .get(postController.getSinglePost)
   // .patch(postController.updatePost)
-  .delete(
-    authMiddleware.checkToken,
-    postController.deletePost);
+  .delete(authMiddleware.checkToken, postController.deletePost);
 
 router.patch(
   "/:id",
@@ -73,15 +72,20 @@ router.patch(
       const url = req.protocol + "://" + req.get("host");
       imagePath = url + "/images/" + req.file.filename;
     }
+    const post = await Post.findById(id);
+    if (post.creator != req.userData.userID) {
+      throw new Error("Sorry you are not authorized to change this post !");
+    }
     const updatedPost = await Post.findByIdAndUpdate(id, {
       title: title,
       content: content,
       imagePath: imagePath,
+      creator: req.userData.userID,
     });
     if (!updatedPost) throw new Error("Sorry this post does not exists !");
     res.status(200).json({
       status: "success",
-      data: updatedPost,
+      data: post,
     });
   }
 );

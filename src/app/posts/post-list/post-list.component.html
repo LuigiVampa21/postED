@@ -8,7 +8,7 @@
       <img [src]="post.imagePath" [alt]="post.title" />
     </div>
     <span>{{ post.content }}</span>
-    <mat-action-row *ngIf="isAuth">
+    <mat-action-row *ngIf="isAuth && userID === post.creator">
       <a
         mat-button
         color="primary"

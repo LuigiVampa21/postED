@@ -34,7 +34,11 @@ exports.getSinglePost = async (req, res) => {
 
 exports.deletePost = async (req, res) => {
   const { id } = req.params;
-  const post = await Post.findByIdAndDelete(id);
+  const post = await Post.findById(id);
+    if (post.creator != req.userData.userID) {
+      throw new Error("Sorry you are not authorized to change this post !");
+    }
+  await Post.findByIdAndDelete(id);
   if (!post) throw new Error("Sorry this post does not exists !");
   res.status(200).json({
     status: "success",
