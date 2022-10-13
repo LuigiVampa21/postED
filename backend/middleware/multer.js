@@ -1,11 +1,10 @@
 const multer = require("multer");
 
 const MIME_TYPE_MAP = {
-    "image/png": "png",
-    "image/jpeg": "jpg",
-    "image/jpg": "jpg",
-  };
-
+  "image/png": "png",
+  "image/jpeg": "jpg",
+  "image/jpg": "jpg",
+};
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
     const isValid = MIME_TYPE_MAP[file.mimetype];
@@ -22,5 +21,4 @@ const storage = multer.diskStorage({
   },
 });
 
-module.exports = storage;
-// (multer({ storage: storage }).single("image"))
+exports.multerM = multer({ storage: storage }).single("image");
