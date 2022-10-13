@@ -1,4 +1,6 @@
 const Post = require("../models/postModel");
+const { StatusCodes } = require("http-status-codes");
+const CustomError = require("../errors/index");
 
 exports.getAllposts = async (req, res) => {
   const pageSize = +req.query.pageSize;
@@ -8,14 +10,14 @@ exports.getAllposts = async (req, res) => {
   let postCount = await Post.countDocuments();
   if (pageSize && currentPage) {
     posts = await postQuery.skip(pageSize * (currentPage - 1)).limit(pageSize);
-    res.status(200).json({
+    res.status(StatusCodes.OK).json({
       status: "success",
       results: postCount,
       data: posts,
     });
   } else {
     posts = await postQuery;
-    res.status(200).json({
+    res.status(StatusCodes.OK).json({
       status: "success",
       results: postCount,
       data: posts,
@@ -25,8 +27,9 @@ exports.getAllposts = async (req, res) => {
 exports.getSinglePost = async (req, res) => {
   const { id } = req.params;
   const post = await Post.findById(id);
-  if (!post) throw new Error("Sorry this post does not exists !");
-  res.status(200).json({
+  if (!post)
+    throw new CustomError.NotFoundError("Sorry this post does not exists !");
+  res.status(StatusCodes.OK).json({
     status: "success",
     data: post,
   });
@@ -35,12 +38,15 @@ exports.getSinglePost = async (req, res) => {
 exports.deletePost = async (req, res) => {
   const { id } = req.params;
   const post = await Post.findById(id);
-    if (post.creator != req.userData.userID) {
-      throw new Error("Sorry you are not authorized to change this post !");
-    }
+  if (post.creator != req.userData.userID) {
+    throw new CustomError.UnauthorizeError(
+      "Sorry you are not authorized to change this post !"
+    );
+  }
   await Post.findByIdAndDelete(id);
-  if (!post) throw new Error("Sorry this post does not exists !");
-  res.status(200).json({
+  if (!post)
+    throw new CustomError.NotFoundError("Sorry this post does not exists !");
+  res.status(StatusCodes.OK).json({
     status: "success",
     data: null,
   });

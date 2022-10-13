@@ -2,6 +2,8 @@ const express = require("express");
 const router = express.Router();
 const postController = require("../controllers/postController");
 const Post = require("../models/postModel");
+const { StatusCodes } = require("http-status-codes");
+const CustomError = require("../errors/index");
 const authMiddleware = require("../middleware/authMiddleware");
 
 router.route("/").get(postController.getAllposts);
@@ -42,7 +44,7 @@ router.post(
       creator: req.userData.userID,
     });
     post.save().then((createdPost) => {
-      res.status(201).json({
+      res.status(StatusCodes.CREATED).json({
         data: {
           id: createdPost._id,
           title: createdPost.title,
@@ -74,7 +76,7 @@ router.patch(
     }
     const post = await Post.findById(id);
     if (post.creator != req.userData.userID) {
-      throw new Error("Sorry you are not authorized to change this post !");
+      throw new CustomError.UnauthorizeError("Sorry you are not authorized to change this post !");
     }
     const updatedPost = await Post.findByIdAndUpdate(id, {
       title: title,
@@ -82,8 +84,8 @@ router.patch(
       imagePath: imagePath,
       creator: req.userData.userID,
     });
-    if (!updatedPost) throw new Error("Sorry this post does not exists !");
-    res.status(200).json({
+    if (!updatedPost) throw new CustomError.NotFoundError("Sorry this post does not exists !");
+    res.status(StatusCodes.OK).json({
       status: "success",
       data: post,
     });

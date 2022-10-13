@@ -9,6 +9,8 @@ const Post = require("./models/postModel");
 const connectDB = require("./DB/connectDB");
 const postRouter = require("./routes/postsRoutes");
 const authRouter = require("./routes/authRoutes");
+const notFound = require('./middleware/not-found');
+const errorHandler = require('./middleware/errorHandler')
 
 connectDB(process.env.MONGO_URI);
 
@@ -32,5 +34,8 @@ app.use((req, res, next) => {
 
 app.use("/api/posts", postRouter);
 app.use("/api/auth", authRouter);
+
+app.use(notFound);
+app.use(errorHandler);
 
 module.exports = app;

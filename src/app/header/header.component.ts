@@ -17,7 +17,6 @@ export class HeaderComponent implements OnInit {
     .subscribe(
       (t:boolean) => {
         this.isAuth = t;
-        console.log(t)
       }
       )
     }

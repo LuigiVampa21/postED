@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Post } from './posts/post.model';
+import { Post } from './post.model';
 import { Subject, map } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';

@@ -1,5 +1,5 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { PostService } from 'src/app/post.service';
+import { PostService } from 'src/app/posts/post.service';
 import { Post } from '../post.model';
 import { Subscription } from 'rxjs'
 import { PageEvent } from '@angular/material/paginator';
@@ -34,9 +34,7 @@ export class PostListComponent implements OnInit, OnDestroy {
         this.isLoading = false;
         this.posts = postData.posts;
         this.totalPosts = postData.postCount;
-        this.userID = this.authService.getUserID();
-        console.log(this.posts);
-        
+        this.userID = this.authService.getUserID();        
     });
     this.isAuth = this.authService.getisAuth();
     // this.authSubs = this.authService.getTokenObs().subscribe((t:string)=>{

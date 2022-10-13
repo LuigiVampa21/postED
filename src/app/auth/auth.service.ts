@@ -19,9 +19,13 @@ export class AuthService {
   constructor(private http:HttpClient, private router: Router) { }
 
   onSignup(f:AuthData){
-    this.http.post<AuthData>('http://localhost:3030/api/auth/signup', {
+   this.http.post<AuthData>('http://localhost:3030/api/auth/signup', {
       email:f.email, password:f.password
-    }).subscribe()
+    }).subscribe(() => {
+      this.router.navigateByUrl('/')
+    }, () => {
+      this.isAuth$.next(false)
+    } )
   }
   onLogin(f:AuthData){
     this.http.post<{token:string, expiring:number, data:{_id:string}}>('http://localhost:3030/api/auth/login', {
@@ -36,10 +40,11 @@ export class AuthService {
         this.isAuth$.next(true);
         const now = new Date();
         const expirationDate = new Date(now.getTime()+ expiresInDuration *1000);
-        // console.log(expirationDate);
         this.saveAuthData(this.token, expirationDate, this.userID)
         this.router.navigateByUrl('/')
       }
+    }, () => {
+      this.isAuth$.next(false)
     }
       )
   }

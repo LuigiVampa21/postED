@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, ParamMap } from '@angular/router';
-import { PostService } from 'src/app/post.service';
+import { PostService } from 'src/app/posts/post.service';
 import { Post } from '../post.model';
 
 
